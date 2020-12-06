@@ -1,16 +1,16 @@
 <template>
     <v-container>
-        <v-row>
-            <v-col>
+        <v-row align="center" justify="center" class="my-12">
+            <v-col cols="12" sm="8" md="6" lg="4">
                 <v-card>
-                    <v-toolbar>
+                    <v-toolbar dark color="primary">
                         <v-toolbar-title>Sign In</v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
-                        <v-btn @click="authenticate('github')"
-                            >with Github</v-btn
-                        >
-                        <v-btn>with Google</v-btn>
+                        <v-btn @click="authenticate('github')">
+                            <v-icon>mdi-github</v-icon>
+                            with Github
+                        </v-btn>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -23,16 +23,16 @@ import { useOAuth } from '@/model/oauth'
 
 export default {
     setup(props, context) {
-        const { $store } = context.root
+        const { $store, $router } = context.root
         const { authenticate, onSuccess } = useOAuth()
 
         onSuccess.value = (resp) => {
-            console.log(resp)
             const { token, user } = resp.data
             $store.commit('user/LOGIN', {
                 token,
                 user,
             })
+            $router.push('/')
         }
 
         return { authenticate }
