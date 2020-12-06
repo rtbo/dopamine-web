@@ -34,9 +34,15 @@ export default new Router({
                 //   name: 'Home',
                 //   component: () => import('@/views/Home')
                 // },
+            ],
+        },
+        {
+            path: '/signin',
+            component: () => import('@/layouts/Naked'),
+            children: [
                 {
-                    path: 'signin',
-                    name: 'SignIn',
+                    path: '',
+                    name: 'Sign-In',
                     component: () => import('@/views/SignIn'),
                 },
             ],

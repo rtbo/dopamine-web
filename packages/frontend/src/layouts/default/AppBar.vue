@@ -1,12 +1,12 @@
 <template>
-    <v-app-bar app>
+    <v-app-bar app dark color="primary">
         <v-app-bar-nav-icon @click="drawer = !drawer" />
 
         <v-toolbar-title>Application</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
-        <v-btn v-if="!signedIn" to="/signin">Sign-In</v-btn>
+        <v-btn v-if="!signedIn" to="/signin" light>Sign-In</v-btn>
         <span v-else>
             <v-avatar>
                 <img v-if="avatarUrl" :src="avatarUrl" alt="avatar" />
