@@ -6,7 +6,7 @@ async function getUser(ctx) {
 
     const doc = await ctx.db.collection('users').findOne(ObjectId(id))
 
-    console.log(doc)
+    ctx.assert(doc, 404)
 
     ctx.body = {
         id,

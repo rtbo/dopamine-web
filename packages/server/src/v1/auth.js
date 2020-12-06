@@ -64,7 +64,7 @@ export async function login(ctx) {
                 avatarUrl,
             },
         },
-        { upsert: true, returnNewDocument: true }
+        { upsert: true, returnOriginal: false }
     )
 
     const jwt = await loginJwt(doc.value)
@@ -73,11 +73,9 @@ export async function login(ctx) {
         token: jwt,
         user: {
             name: doc.value.name,
-            avatarUrl: doc.value.name,
+            avatarUrl: doc.value.avatarUrl,
         },
     }
-
-    ctx.response.status = 200
 }
 
 export function loginJwt(user) {
