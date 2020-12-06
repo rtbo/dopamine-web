@@ -27,7 +27,7 @@ export default new Router({
             // Layouts allow you to define different
             // structures for different view
             // https://router.vuejs.org/guide/essentials/nested-routes.html#nested-routes
-            component: () => import('@/layouts/default'),
+            component: () => import('@/layouts/Default'),
             children: [
                 // {
                 //   path: '',
