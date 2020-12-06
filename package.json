@@ -1,0 +1,11 @@
+{
+    "name": "dopamine-web",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Dopamine PM - Web components",
+    "author": "Remi Thebault <remi.thebault@gmail.com>",
+    "license": "MIT",
+    "workspaces": [
+        "packages/*"
+    ]
+}

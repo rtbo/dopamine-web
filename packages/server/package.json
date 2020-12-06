@@ -1,0 +1,40 @@
+{
+    "name": "@dopamine/server",
+    "version": "0.1.0",
+    "description": "Dopamine PM server app",
+    "main": "src/index.js",
+    "repository": "https://github.com/rtbo/dopamine-server",
+    "author": "Rémi Thebault",
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "dev": "nodemon --exec babel-node -r dotenv/config src/index.js",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix ."
+    },
+    "dependencies": {
+        "@koa/cors": "^3.1.0",
+        "@koa/router": "^10.0.0",
+        "axios": "^0.21.0",
+        "jsonwebtoken": "^8.5.1",
+        "koa": "^2.13.0",
+        "koa-bodyparser": "^4.3.0",
+        "koa-helmet": "^6.0.0",
+        "koa2-ctx-validator": "^1.0.4",
+        "mongodb": "^3.6.3"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.12.9",
+        "@babel/node": "^7.12.6",
+        "@babel/preset-env": "^7.12.7",
+        "dotenv": "^8.2.0",
+        "eslint": "^7.14.0",
+        "eslint-config-prettier": "^6.15.0",
+        "eslint-config-standard": "^16.0.2",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^3.2.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "prettier": "^2.2.1"
+    }
+}
