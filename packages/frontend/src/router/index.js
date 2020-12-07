@@ -47,5 +47,25 @@ export default new Router({
                 },
             ],
         },
+        {
+            path: '/settings',
+            component: () => import('@/layouts/Settings'),
+            children: [
+                {
+                    path: '',
+                    redirect: 'profile',
+                },
+                {
+                    path: 'profile',
+                    name: 'Profile',
+                    component: () => import('@/pages/SettingsProfile'),
+                },
+                {
+                    path: 'login',
+                    name: 'CLI Login',
+                    component: () => import('@/pages/SettingsLogin'),
+                },
+            ],
+        },
     ],
 })

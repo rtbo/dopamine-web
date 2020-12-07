@@ -1,8 +1,6 @@
 <template>
     <v-app-bar app dark color="primary">
-        <v-app-bar-nav-icon @click="drawer = !drawer" />
-
-        <v-toolbar-title>Application</v-toolbar-title>
+        <v-toolbar-title>the Dopamine package manager</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -18,7 +16,13 @@
             </template>
             <v-list>
                 <v-list-item>
-                    <v-btn @click="logout">
+                    <v-btn to="/settings" text tile>
+                        <v-icon>mdi-cogs</v-icon>
+                        Settings
+                    </v-btn>
+                </v-list-item>
+                <v-list-item>
+                    <v-btn @click="logout" text tile>
                         <v-icon>mdi-logout</v-icon>
                         Logout
                     </v-btn>
