@@ -43,7 +43,7 @@ export default new Router({
                 {
                     path: '',
                     name: 'Sign-In',
-                    component: () => import('@/views/SignIn'),
+                    component: () => import('@/pages/SignInPage'),
                 },
             ],
         },

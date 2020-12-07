@@ -22,6 +22,7 @@
 import { useOAuth } from '@/model/oauth'
 
 export default {
+    name: 'SignInPage',
     setup(props, context) {
         const { $store, $router } = context.root
         const { authenticate, onSuccess } = useOAuth()
