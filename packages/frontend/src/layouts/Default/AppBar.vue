@@ -7,14 +7,24 @@
         <v-spacer></v-spacer>
 
         <v-btn v-if="!signedIn" to="/signin" light>Sign-In</v-btn>
-        <span v-else>
-            <v-avatar>
-                <img v-if="avatarUrl" :src="avatarUrl" alt="avatar" />
-                <span v-else>{{ initials }}</span>
-            </v-avatar>
-            &nbsp;
-            {{ name }}
-        </span>
+        <v-menu v-else bottom offset-y>
+            <template v-slot:activator="{ on }">
+                <v-btn icon x-large v-on="on" class="mx-1">
+                    <v-avatar>
+                        <img v-if="avatarUrl" :src="avatarUrl" alt="avatar" />
+                        <span v-else class="headline">{{ initials }}</span>
+                    </v-avatar>
+                </v-btn>
+            </template>
+            <v-list>
+                <v-list-item>
+                    <v-btn @click="logout">
+                        <v-icon>mdi-logout</v-icon>
+                        Logout
+                    </v-btn>
+                </v-list-item>
+            </v-list>
+        </v-menu>
     </v-app-bar>
 </template>
 
@@ -35,6 +45,11 @@ export default {
                 .split(' ')
                 .filter((word) => word.length !== 0)
                 .map((word) => word[0].toUpperCase())
+        },
+    },
+    methods: {
+        logout: function () {
+            this.$store.commit('user/LOGOUT')
         },
     },
 }
