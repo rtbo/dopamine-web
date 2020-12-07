@@ -1,7 +1,14 @@
+import Joi from 'joi'
 import { ObjectId } from 'mongodb'
+import validate from '../validate'
+
+const getUserSpec = {
+    params: {
+        id: Joi.string().required(),
+    },
+}
 
 async function getUser(ctx) {
-    ctx.checkParams('id')
     const { id } = ctx.params
 
     const doc = await ctx.db.collection('users').findOne(ObjectId(id))
@@ -16,5 +23,5 @@ async function getUser(ctx) {
 }
 
 export async function setupUsers(router) {
-    router.get('/users/:id', getUser)
+    router.get('/users/:id', validate(getUserSpec), getUser)
 }

@@ -1,6 +1,8 @@
 import axios from 'axios'
+import Joi from 'joi'
 import { signJwt } from '../crypto'
 import env from '../env'
+import validate from '../validate'
 
 const providersConfig = {
     github: {
@@ -11,11 +13,15 @@ const providersConfig = {
     },
 }
 
-export async function login(ctx) {
-    ctx.checkBody('provider').eq('github')
-    ctx.checkBody('code').notEmpty()
-    ctx.checkBody('state').notEmpty()
+const loginSpec = {
+    body: {
+        provider: Joi.string().valid('github').required(),
+        code: Joi.string().required(),
+        state: Joi.string().required(),
+    },
+}
 
+export async function login(ctx) {
     const { provider, code, state } = ctx.request.body
 
     const config = providersConfig[provider]
@@ -35,7 +41,13 @@ export async function login(ctx) {
         }
     )
 
-    const { token_type: tokenType, access_token: accessToken } = token.data
+    const {
+        token_type: tokenType,
+        access_token: accessToken,
+        error_description: error,
+    } = token.data
+
+    ctx.assert(error === undefined, 400, error)
 
     ctx.assert(tokenType === 'bearer', 400, 'Unsupported OAuth 2 token_type')
 
@@ -87,5 +99,5 @@ export function loginJwt(user) {
 }
 
 export function setupAuth(router) {
-    router.post('/login', login)
+    router.post('/login', validate(loginSpec), login)
 }
