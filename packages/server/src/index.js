@@ -2,15 +2,12 @@ import cors from '@koa/cors'
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import helmet from 'koa-helmet'
-import koaValidator from 'koa2-ctx-validator'
 
 import { MongoClient } from 'mongodb'
 import env from './env'
 import { buildApiV1Router } from './v1'
 
 const app = new Koa()
-
-koaValidator(app)
 
 app.use(helmet())
 app.use(cors())
