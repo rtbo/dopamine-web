@@ -22,8 +22,8 @@ import * as modules from './modules'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    modules,
-    plugins: [pathify.plugin],
+  modules,
+  plugins: [pathify.plugin],
 })
 
 // A reusable const for making root commits and dispatches
@@ -35,20 +35,20 @@ export const ROOT_DISPATCH = Object.freeze({ root: true })
 const VuexPathifySymbol = Symbol('VuexPathify')
 
 export function provideVuexPathify(context) {
-    const { $store } = context.root
-    const get = (path) => computed(() => $store.get(path))
-    const set = (path, data) => $store.set(path, data)
-    const sync = (path) =>
-        computed({
-            get: () => $store.get(path),
-            set: (val) => $store.set(path, val),
-        })
-    const dispatch = (action, data) => $store.dispatch(action, data)
-    const commit = (mutation, data) => $store.dispatch(mutation, data)
+  const { $store } = context.root
+  const get = (path) => computed(() => $store.get(path))
+  const set = (path, data) => $store.set(path, data)
+  const sync = (path) =>
+    computed({
+      get: () => $store.get(path),
+      set: (val) => $store.set(path, val),
+    })
+  const dispatch = (action, data) => $store.dispatch(action, data)
+  const commit = (mutation, data) => $store.dispatch(mutation, data)
 
-    provide(VuexPathifySymbol, { get, set, sync, dispatch, commit })
+  provide(VuexPathifySymbol, { get, set, sync, dispatch, commit })
 }
 
 export function useVuexPathify() {
-    return inject(VuexPathifySymbol)
+  return inject(VuexPathifySymbol)
 }

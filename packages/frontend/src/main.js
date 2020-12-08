@@ -11,24 +11,24 @@ import { resource } from './model/api'
 Vue.config.productionTip = false
 
 const oauthConfig = {
-    apiUrl: resource('/v1/login'),
-    providers: {
-        github: {
-            clientId: process.env.GITHUB_CLIENTID || '3f2f6c2ce1e0bdf8ae6c',
-        },
+  apiUrl: resource('/v1/login'),
+  providers: {
+    github: {
+      clientId: process.env.GITHUB_CLIENTID || '3f2f6c2ce1e0bdf8ae6c',
     },
+  },
 }
 
 new Vue({
-    router,
-    store,
-    vuetify,
-    setup(_, context) {
-        provideOAuth(oauthConfig)
-        provideVuexPathify(context)
+  router,
+  store,
+  vuetify,
+  setup(_, context) {
+    provideOAuth(oauthConfig)
+    provideVuexPathify(context)
 
-        const { $store } = context.root
-        $store.dispatch('user/CHECK_LOGIN')
-    },
-    render: (h) => h(App),
+    const { $store } = context.root
+    $store.dispatch('user/CHECK_LOGIN')
+  },
+  render: (h) => h(App),
 }).$mount('#app')

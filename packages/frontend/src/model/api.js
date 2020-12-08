@@ -13,17 +13,17 @@ const prefix = '/api'
  * @param {string} path
  */
 export function resource(path) {
-    const p = port === '80' ? '' : `:${port}`
-    return `${host}${p}${prefix}${path || ''}`
+  const p = port === '80' ? '' : `:${port}`
+  return `${host}${p}${prefix}${path || ''}`
 }
 
 export function authHeader() {
-    const userToken = store.get('user/token')
-    return {
-        Authorization: `Bearer ${userToken}`,
-    }
+  const userToken = store.get('user/token')
+  return {
+    Authorization: `Bearer ${userToken}`,
+  }
 }
 
 export default axios.create({
-    baseURL: resource(),
+  baseURL: resource(),
 })

@@ -1,19 +1,19 @@
 <template>
-    <v-btn :color="color" class="v-btn--app" v-bind="$attrs" v-on="$listeners">
-        <slot />
-    </v-btn>
+  <v-btn :color="color" class="v-btn--app" v-bind="$attrs" v-on="$listeners">
+    <slot />
+  </v-btn>
 </template>
 
 <script>
 export default {
-    name: 'AppBtn',
+  name: 'AppBtn',
 
-    props: {
-        color: {
-            type: String,
-            default: 'primary',
-        },
+  props: {
+    color: {
+      type: String,
+      default: 'primary',
     },
+  },
 }
 </script>
 
