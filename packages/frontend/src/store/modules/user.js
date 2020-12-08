@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode'
-import { api } from '@/model/api'
+import api from '@/model/api'
 
 const state = {
     token: localStorage.getItem('USER_TOKEN'),
@@ -46,7 +46,7 @@ const actions = {
 
         if (!user) {
             try {
-                const { data } = await api.get(`/users/${sub}`)
+                const { data } = await api.get(`/v1/users/${sub}`)
                 user = data
             } catch (e) {
                 commit('LOGOUT')

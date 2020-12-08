@@ -11,7 +11,7 @@ import { resource } from './model/api'
 Vue.config.productionTip = false
 
 const oauthConfig = {
-    apiUrl: resource('/login'),
+    apiUrl: resource('/v1/login'),
     providers: {
         github: {
             clientId: process.env.GITHUB_CLIENTID || '3f2f6c2ce1e0bdf8ae6c',

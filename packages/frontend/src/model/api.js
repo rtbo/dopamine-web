@@ -1,9 +1,11 @@
 import axios from 'axios'
 
+import store from '../store'
+
 export const host = process.env.VUE_APP_API_HOST || 'http://localhost'
 export const port = process.env.VUE_APP_API_PORT || '3000'
 
-const prefix = '/api/v1'
+const prefix = '/api'
 
 /**
  * Compute the url of an API resource pointed by path
@@ -15,6 +17,13 @@ export function resource(path) {
     return `${host}${p}${prefix}${path || ''}`
 }
 
-export const api = axios.create({
+export function authHeader() {
+    const userToken = store.get('user/token')
+    return {
+        Authorization: `Bearer ${userToken}`,
+    }
+}
+
+export default axios.create({
     baseURL: resource(),
 })

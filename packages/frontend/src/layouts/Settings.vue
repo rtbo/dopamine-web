@@ -3,8 +3,8 @@
         <default-app-bar />
         <v-main>
             <v-container>
-                <v-row align="center" justify="center" class="my-4">
-                    <v-col cols="12" md="4">
+                <v-row align-content="start" justify="center" class="my-4">
+                    <v-col cols="12" sm="4" lg="3">
                         <v-navigation-drawer
                             floating
                             permanent
@@ -29,7 +29,7 @@
                             </v-list>
                         </v-navigation-drawer>
                     </v-col>
-                    <v-col cols="12" md="8">
+                    <v-col cols="12" sm="8" lg="5">
                         <v-fade-transition mode="out-in">
                             <router-view />
                         </v-fade-transition>

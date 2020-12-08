@@ -10,7 +10,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import store from '../store'
+
 Vue.use(Router)
+
+function requireAuth(to, from, next) {
+    console.log('requireAuth')
+    if (store.get('user/signedIn')) {
+        next()
+    } else {
+        const redirectQuery = to.path !== '/' ? `?redirect=${to.path}` : ''
+        next({ path: `/signin${redirectQuery}` })
+    }
+}
 
 export default new Router({
     mode: 'history',
@@ -50,6 +62,7 @@ export default new Router({
         {
             path: '/settings',
             component: () => import('@/layouts/Settings'),
+            beforeEnter: requireAuth,
             children: [
                 {
                     path: '',
