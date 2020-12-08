@@ -11,8 +11,8 @@ interface.
 ```
 POST    /v1/login
 ```
-Get access-token. Create a new user if e-mail not known.
-Must be called with the following data in JSON form:
+Get access-token. Create a new user in the DB if e-mail not known.
+Request body:
 ```json
 {
     "provider": "github",
@@ -21,7 +21,7 @@ Must be called with the following data in JSON form:
 }
  ```
 It is planned to support more login methods later. This is typically called
-from the browser only to login to the frontend.
+from the browser only, in order to login to the frontend.
 
 ---
 
@@ -32,12 +32,51 @@ Get user info. Can be called without authentication.
 Data received:
 ```json
 {
-    "id": "(user id in the database)",
+    "id": "(user id)",
     "name": "(User full name - the one given to the login provider)",
-    "avatarUrl": "(a link to the user avatar picture)"
+    "avatarUrl": "(a link to the user avatar picture)",
 }
 ```
-Authenticated users will in addition receive their own E-mail address.
+
+---
+
+```
+POST    /v1/users/{id}/cli-keys
+```
+Request body:
+```json
+{ "name": "A name to give to the key" }
+```
+
+Create a new CLI key for the authenticated user, who MUST match with
+the id provided.
+The name must be unique per user.
+
+Data received:
+```json
+{ "name": "the name given", "key": "(the key)" }
+```
+__Note__: The entire key is only sent once when created. The user should be
+prompted to save it in safe place.
+
+---
+
+```
+GET     /v1/users/{id}/cli-keys
+```
+Get the CLI keys for the authenticated user, who MUST match with
+the id provided.
+Data received:
+```json
+{
+    "keys": [
+        { "id": "(key id)", "name": "name", "key": "a key ... extract" },
+        { "id": "(key id)", "name": "name", "key": "a key ... extract" }
+    ]
+}
+```
+__Note__: The entire key is only sent once when created. The user should be
+prompted to save it in safe place.
 
 ---
 

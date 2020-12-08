@@ -7,11 +7,10 @@ export default function (spec) {
         s[key] = Joi.object(val).required()
     }
 
-    const schema = Joi.object(s)
+    const schema = Joi.object(s).unknown()
 
     return async (ctx, next) => {
         const validation = schema.validate(ctx.request, {
-            allowUnknown: true,
             abortEarly: false,
         })
         ctx.assert(validation.error === undefined, 400, validation.error)

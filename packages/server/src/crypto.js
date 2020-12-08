@@ -9,9 +9,9 @@ export function signJwt(payload, secret, signOptions) {
     })
 }
 
-export function verifyJwt(token, secret) {
+export function verifyJwt(token, secret, verifyOptions) {
     return new Promise((resolve, reject) => {
-        jwt.verify(token, secret, (err, decoded) => {
+        jwt.verify(token, secret, verifyOptions, (err, decoded) => {
             if (err) reject(err)
             else resolve(decoded)
         })
