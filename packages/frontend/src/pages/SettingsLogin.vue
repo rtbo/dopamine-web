@@ -39,11 +39,7 @@
                   your terminal to save it.
                 </v-card-subtitle>
                 <v-card-text>
-                  <v-sheet
-                    color="grey lighten-2"
-                    class="rounded-lg codesheet"
-                    style=""
-                  >
+                  <v-sheet color="grey lighten-2" class="rounded-lg codesheet">
                     dop login {{ newKey.key }}
                   </v-sheet>
                   <v-btn class="my-3" flat @click="newKeyCopy">
@@ -54,24 +50,48 @@
                 </v-card-text>
               </v-col>
             </v-row>
-            <v-row v-if="newKey">
-              <v-col></v-col>
-              <v-card></v-card>
-            </v-row>
           </v-container>
         </v-card-text>
       </v-card>
       <v-card class="my-10">
         <v-card-title>Active keys</v-card-title>
-        <v-card-text>No active keys</v-card-text>
+        <v-card-text>
+          <span v-if="!activeKeys.length">No active keys</span>
+          <v-container fluid>
+            <v-row
+              v-for="cliKey in activeKeys"
+              :key="cliKey.name"
+              align="center"
+            >
+              <v-col cols="3">{{ cliKey.name }}</v-col>
+              <v-col cols="6">
+                <v-sheet color="grey lighten-2" class="rounded-lg codesheet">
+                  {{ cliKey.key }}
+                </v-sheet>
+              </v-col>
+              <v-col cols="3">
+                <v-btn
+                  small
+                  class="mx-3"
+                  color="red ligthen-3"
+                  @click="revokeKey(cliKey.name)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                  Revoke
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
       </v-card>
     </v-card-text>
   </div>
 </template>
 
 <script>
-import { ref } from '@vue/composition-api'
-import api, { authHeader } from '../model/api'
+import { onMounted, ref, watch } from '@vue/composition-api'
+import axios from 'axios'
+import { v1 } from '../model/api'
 import { useVuexPathify } from '../store'
 
 export default {
@@ -84,17 +104,19 @@ export default {
     const newKey = ref(null)
     const newKeySnack = ref(false)
 
+    const activeKeys = ref([])
+
+    async function updateActiveKeys(userId) {
+      const res = await axios(v1.getCliKeys(userId))
+      console.log('received')
+      console.log(res)
+      activeKeys.value = res.data.cliKeys
+    }
+
     async function newKeyGen() {
-      const res = await api.post(
-        `/v1/users/${userId.value}/cli-keys`,
-        {
-          name: newKeyName.value,
-        },
-        {
-          headers: authHeader(),
-        },
-      )
+      const res = await axios(v1.postCliKey(userId.value, newKeyName.value))
       newKey.value = res.data
+      return updateActiveKeys(userId.value)
     }
 
     async function newKeyCopy() {
@@ -106,12 +128,26 @@ export default {
       }, 1500)
     }
 
+    async function revokeKey(name) {
+      const res = await axios(v1.delCliKey(userId.value, name))
+      activeKeys.value = res.data.cliKeys
+    }
+
+    watch(userId, async (id) => {
+      await updateActiveKeys(id)
+    })
+    onMounted(() => {
+      if (userId.value) return updateActiveKeys(userId.value)
+    })
+
     return {
       newKeyName,
       newKeyGen,
       newKey,
       newKeyCopy,
       newKeySnack,
+      activeKeys,
+      revokeKey,
     }
   },
 }

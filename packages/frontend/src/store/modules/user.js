@@ -1,5 +1,6 @@
+import axios from 'axios'
 import jwtDecode from 'jwt-decode'
-import api from '@/model/api'
+import { v1 } from '@/model/api'
 
 const state = {
   token: localStorage.getItem('USER_TOKEN'),
@@ -46,7 +47,7 @@ const actions = {
 
     if (!user) {
       try {
-        const { data } = await api.get(`/v1/users/${sub}`)
+        const { data } = await axios(v1.getUser(sub))
         user = data
       } catch (e) {
         commit('LOGOUT')

@@ -57,7 +57,7 @@ Data received:
 { "name": "the name given", "key": "(the key)" }
 ```
 __Note__: The entire key is only sent once when created. The user should be
-prompted to save it in safe place.
+prompted to save it in safe place at this time.
 
 ---
 
@@ -69,14 +69,29 @@ the id provided.
 Data received:
 ```json
 {
-    "keys": [
-        { "id": "(key id)", "name": "name", "key": "a key ... extract" },
-        { "id": "(key id)", "name": "name", "key": "a key ... extract" }
+    "cliKeys": [
+        { "name": "name", "key": "a key ... extract" },
+        { "name": "name", "key": "a key ... extract" }
     ]
 }
 ```
-__Note__: The entire key is only sent once when created. The user should be
-prompted to save it in safe place.
+
+---
+
+```
+DELETE  /v1/users/{id}/cli-keys/{name}
+```
+Delete the CLI key identified by name for the authenticated user, who MUST match with
+the id provided.
+The remaining keys are received
+```json
+{
+    "cliKeys": [
+        { "name": "name", "key": "a key ... extract" },
+        { "name": "name", "key": "a key ... extract" }
+    ]
+}
+```
 
 ---
 
