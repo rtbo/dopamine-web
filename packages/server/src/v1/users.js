@@ -105,26 +105,42 @@ export async function setupUsers(router) {
                     },
                 },
                 {
-                    returnOriginal: false,
+                    returnOriginal: true,
                     projection: {
                         cliKeys: 1,
                     },
                 }
             )
 
-            console.log(doc.value)
-            ctx.assert(doc.value, 404)
-
             const user = doc.value
-            if (!user.cliKeys) {
-                ctx.body = { cliKeys: [] }
-            } else {
-                const cliKeys = user.cliKeys.map(({ name, key }) => ({
+
+            ctx.assert(user, 404)
+
+            // returned user still has the deleted key (returnOrginal = true)
+            // we must now add it to user revoked list, and filter it from the
+            // returned data
+
+            const key = user.cliKeys.find((ck) => ck.name === name)
+            const mod = await ctx.db.collection('users').updateOne(
+                {
+                    _id: ObjectId(id),
+                },
+                {
+                    $push: {
+                        revokedKeys: key.key,
+                    },
+                }
+            )
+            ctx.assert(mod.modifiedCount === 1)
+
+            const cliKeys = user.cliKeys
+                .filter((ck) => ck.name !== name)
+                .map(({ name, key }) => ({
                     name,
                     key: keyExtract(key),
                 }))
-                ctx.body = { cliKeys }
-            }
+
+            ctx.body = { cliKeys }
         }
     )
 

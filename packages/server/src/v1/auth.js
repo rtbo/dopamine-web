@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Joi from 'joi'
+import { ObjectId } from 'mongodb'
 import { signJwt, verifyJwt } from '../crypto'
 import env from '../env'
 import validateRequest from '../validate-request'
@@ -30,15 +31,26 @@ function extractBearerToken(ctx) {
     return null
 }
 
+async function approveAuthorization(ctx, token) {
+    try {
+        const decoded = await verifyJwt(token, env.jwtSecret)
+        // token key is correct
+        // checking if it was revoked by user
+        const revoked = await ctx.db.collection('users').findOne({
+            _id: ObjectId(decoded.sub),
+            revokedKeys: token,
+        })
+        ctx.assert(!revoked, 401)
+        ctx.state.auth = decoded.sub
+    } catch (err) {
+        ctx.throw(401)
+    }
+}
+
 export async function checkAuth(ctx, next) {
     const token = extractBearerToken(ctx)
     if (token) {
-        try {
-            const decoded = await verifyJwt(token, env.jwtSecret)
-            ctx.state.auth = decoded.sub
-        } catch (err) {
-            ctx.throw(401)
-        }
+        await approveAuthorization(ctx, token)
     }
     return next()
 }
@@ -46,12 +58,7 @@ export async function checkAuth(ctx, next) {
 export async function requireAuth(ctx, next) {
     const token = extractBearerToken(ctx)
     ctx.assert(token, 401)
-    try {
-        const decoded = await verifyJwt(token, env.jwtSecret)
-        ctx.state.auth = decoded.sub
-    } catch (err) {
-        ctx.throw(401)
-    }
+    await approveAuthorization(ctx, token)
     return next()
 }
 
