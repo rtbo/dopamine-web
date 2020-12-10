@@ -5,8 +5,8 @@ import env from '../env'
 import validateRequest from '../validate-request'
 import { requireAuth } from './auth'
 
-function createCLIAuthJwt(id) {
-    return signJwt({}, env.jwtSecret, { subject: id.toString() })
+function createCLIAuthJwt(id, name) {
+    return signJwt({ name }, env.jwtSecret, { subject: id.toString() })
 }
 
 function keyExtract(key) {
@@ -136,7 +136,7 @@ export async function setupUsers(router) {
                 id: Joi.string().required(),
             },
             body: {
-                name: Joi.string().required(),
+                name: Joi.string().min(1).required(),
             },
         }),
         async (ctx) => {
@@ -156,7 +156,7 @@ export async function setupUsers(router) {
 
             ctx.assert(ck === null, 400, `'${name}' already exists`)
 
-            const key = await createCLIAuthJwt(id)
+            const key = await createCLIAuthJwt(id, name)
             const doc = await ctx.db.collection('users').findOneAndUpdate(
                 {
                     _id: ObjectId(id),
