@@ -1,7 +1,8 @@
 <template>
   <v-app-bar app dark color="primary">
-    <v-toolbar-title>the Dopamine package manager</v-toolbar-title>
-
+    <v-toolbar-title dark style="cursor: pointer" @click="$router.push('/')">
+      the Dopamine package manager
+    </v-toolbar-title>
     <v-spacer></v-spacer>
 
     <v-btn v-if="!signedIn" to="/signin" light>Sign-In</v-btn>
