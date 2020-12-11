@@ -15,7 +15,6 @@ import store from '../store'
 Vue.use(Router)
 
 function requireAuth(to, from, next) {
-  console.log('requireAuth')
   if (store.get('user/signedIn')) {
     next()
   } else {

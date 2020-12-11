@@ -4,12 +4,19 @@ import { v1 } from '@/model/api'
 
 const state = {
   token: localStorage.getItem('USER_TOKEN'),
-  id: null,
   name: null,
   avatarUrl: null,
 }
 
 const getters = {
+  id(state) {
+    if (state.token) {
+      const { sub } = jwtDecode(state.token)
+      return sub
+    } else {
+      return null
+    }
+  },
   signedIn(state) {
     return !!state.token
   },
@@ -19,7 +26,6 @@ const mutations = {
   LOGIN: (state, { token, user }) => {
     console.log('LOGIN commit')
     state.token = token
-    state.id = user.id
     state.name = user.name
     state.avatarUrl = user.avatarUrl
     localStorage.setItem('USER_TOKEN', token)
@@ -27,7 +33,6 @@ const mutations = {
   LOGOUT: (state) => {
     console.log('LOGOUT commit')
     state.token = null
-    state.id = null
     state.name = null
     state.avatarUrl = null
     localStorage.removeItem('USER_TOKEN')
