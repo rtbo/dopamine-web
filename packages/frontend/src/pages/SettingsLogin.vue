@@ -4,45 +4,41 @@
     <v-card-subtitle>Manage CLI credentials</v-card-subtitle>
     <v-card>
       <v-card-title>Generate a new key</v-card-title>
-      <v-card-text>
-        <div class="d-flex align-center">
-          <v-text-field
-            label="Key name"
-            placeholder="e.g. laptop"
-            v-model="newKeyName"
-            class="d-inline-block"
-            style="width: 300px"
-          ></v-text-field>
-          <v-btn
-            small
-            color="secondary"
-            class="mx-5"
-            :disabled="!newKeyName"
-            @click="newKeyGen"
-          >
-            Generate
+      <v-card-text class="d-flex align-center">
+        <v-text-field
+          label="Key name"
+          placeholder="e.g. laptop"
+          v-model="newKeyName"
+          class="d-inline-block"
+          style="width: 300px"
+        ></v-text-field>
+        <v-btn
+          small
+          color="secondary"
+          class="mx-5"
+          :disabled="!newKeyName.trim()"
+          @click="newKeyGen"
+        >
+          Generate
+        </v-btn>
+      </v-card-text>
+      <v-card-text v-if="newKey">
+        <v-divider class="mx-2"></v-divider>
+        <p class="text-subtitle-1">New key available: {{ newKey.name }}</p>
+        <p class="text-subtitle-2">
+          It will be shown only once. Paste the following command in your
+          terminal to save it.
+        </p>
+        <v-sheet color="grey lighten-2" class="rounded-lg codesheet">
+          dop login {{ newKey.key }}
+        </v-sheet>
+        <p class="d-flex align-center justify-end">
+          <v-btn class="my-3" @click="newKeyCopy">
+            <v-icon>mdi-clipboard-text</v-icon>
+            Copy
           </v-btn>
-        </div>
-        <div v-if="newKey">
-          <v-divider></v-divider>
-          <v-card-title class="text-h6">
-            New key available: {{ newKey.name }}
-          </v-card-title>
-          <v-card-subtitle>
-            It will be shown only once. Paste the following command in your
-            terminal to save it.
-          </v-card-subtitle>
-          <v-card-text>
-            <v-sheet color="grey lighten-2" class="rounded-lg codesheet">
-              dop login {{ newKey.key }}
-            </v-sheet>
-            <v-btn class="my-3" flat @click="newKeyCopy">
-              <v-icon>mdi-clipboard-text</v-icon>
-              Copy
-            </v-btn>
-            <v-snackbar v-model="newKeySnack">Copied!</v-snackbar>
-          </v-card-text>
-        </div>
+        </p>
+        <v-snackbar v-model="newKeySnack">Copied!</v-snackbar>
       </v-card-text>
     </v-card>
     <v-card class="my-10">
@@ -101,7 +97,9 @@ export default {
     }
 
     async function newKeyGen() {
-      const res = await axios(v1.postCliKey(userId.value, newKeyName.value))
+      const res = await axios(
+        v1.postCliKey(userId.value, newKeyName.value.trim()),
+      )
       newKey.value = res.data
       newKeyName.value = ''
       return updateActiveKeys(userId.value)
