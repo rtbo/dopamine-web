@@ -1,5 +1,6 @@
 import Router from '@koa/router'
 import { setupAuth } from './auth'
+import { setupPackages } from './packages'
 import { setupUsers } from './users'
 
 export function buildApiV1Router() {
@@ -7,6 +8,7 @@ export function buildApiV1Router() {
 
     setupAuth(router)
     setupUsers(router)
+    setupPackages(router)
 
     return router
 }
