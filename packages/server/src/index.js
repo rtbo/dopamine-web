@@ -24,9 +24,30 @@ const mongoClient = new MongoClient(env.mongoDbUri, {
     useUnifiedTopology: true,
 })
 
-mongoClient.connect().then(() => {
-    app.context.db = mongoClient.db(env.mongDbName)
-    app.listen(env.httpPort, () => {
+mongoClient.connect().then(async () => {
+    const db = mongoClient.db(env.mongoDbName)
+
+    await db.collection('users').createIndex(
+        {
+            email: 1,
+        },
+        { unique: true }
+    )
+    await db.collection('packages').createIndex(
+        {
+            name: 1,
+        },
+        { unique: true }
+    )
+
+    app.context.db = db
+
+    const server = app.listen(env.httpPort, () => {
         console.log(`listening to port ${env.httpPort}`)
+    })
+
+    server.on('close', async () => {
+        console.log('closing db client')
+        await mongoClient.close()
     })
 })

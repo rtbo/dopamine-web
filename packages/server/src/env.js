@@ -1,6 +1,6 @@
 export default {
     mongoDbUri: process.env.MONGODB_URI || 'mongodb://127.0.0.1/dopamine',
-    mongDbName: process.env.MONGODB_NAME || 'dopamine',
+    mongoDbName: process.env.MONGODB_NAME || 'dopamine',
 
     jwtSecret: process.env.JWT_SECRET,
 
