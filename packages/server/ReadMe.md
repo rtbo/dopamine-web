@@ -102,14 +102,22 @@ This section treats the package definitions, that is their recipe to create bina
 ```
 POST    /v1/packages
 ```
-Create a new package
+Create a new package. User must be authenticated.
 
----
-
+Expected request body:
+```json
+{
+    "name": "[package-name]"
+}
 ```
-PUT     /v1/packages/update
+Returned data:
+```json
+{
+    "id": "[the package id]",
+    "name": "[package-name]",
+    "versions": []
+}
 ```
-Update a new package (its metadata mainly)
 
 ---
 
@@ -117,6 +125,20 @@ Update a new package (its metadata mainly)
 GET     /v1/packages/{id}
 ```
 Read a package
+
+Returned data:
+```json
+{
+    "id": "[the package id]",
+    "name": "[package-name]",
+    "versions": [
+        "1.0.0",
+        "1.0.1",
+        "1.1.0",
+        ...
+    ]
+}
+```
 
 ---
 
