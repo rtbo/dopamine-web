@@ -2,11 +2,10 @@
 
 ## API v1
 
+### Authentication
 In the following API, authentication means to pass to the API an access token
 that was received either by the `/v1/login` endpoint or through the frontend
 interface.
-
-### Users
 
 ```
 POST    /v1/login
@@ -24,6 +23,8 @@ It is planned to support more login methods later. This is typically called
 from the browser only, in order to login to the frontend.
 
 ---
+
+### Users
 
 ```
 GET     /v1/users/{id}
@@ -143,9 +144,48 @@ Returned data:
 ---
 
 ```
-POST    /v1/packages/{id}/versions
+POST    /v1/packages/{id}/recipes
 ```
 Publish a new version for a package
+
+Expected request:
+```json
+{
+    "version": "[semver version]",
+    "revision": "[unique revision]",
+    "recipe": "[lua recipe content]",
+    "arUpload": "[boolean to tell if archive upload is needed - only if there is more than the lua recipe]",
+}
+```
+Response
+```json
+{
+    "version": "[semver version]",
+    "revision": "[unique revision]",
+    "recipe": "[lua recipe content]",
+    "maintainerId": "[user id of creator]",
+    "created": "[creation date]",
+    "arUploadToken": "[secured token valid 10 minutes to use as bearer to upload archive content]"
+}
+```
+
+---
+```
+GET     /v1/packages/{id}/recipes/{version}?revision={}
+```
+Get a recipe. Revision query param is optional. Will default to
+latest revision if no revision specified
+Response
+```json
+{
+    "version": "[semver version]",
+    "revision": "[unique revision]",
+    "recipe": "[lua recipe content]",
+    "maintainerId": "[user id of creator]",
+    "created": "[creation date]",
+    "arDownload": "[download link for archive content (if any)]"
+}
+```
 
 ---
 
