@@ -1,3 +1,15 @@
+import path from 'path'
+import { config } from 'dotenv'
+
+function envFilePath() {
+    const file = process.env.NODE_ENV ? `${process.env.NODE_ENV}.env` : '.env'
+    return path.resolve(__dirname, '../env', file)
+}
+
+config({
+    path: envFilePath(),
+})
+
 export default {
     mongoDbUri: process.env.MONGODB_URI || 'mongodb://127.0.0.1/dopamine',
     mongoDbName: process.env.MONGODB_NAME || 'dopamine',

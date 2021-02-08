@@ -8,14 +8,16 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "dev": "nodemon --exec babel-node -r dotenv/config src/index.js",
+        "dev": "nodemon --exec babel-node src/index.js",
         "lint": "eslint .",
-        "lint:fix": "eslint --fix ."
+        "lint:fix": "eslint --fix .",
+        "test": "NODE_ENV=test mocha"
     },
     "dependencies": {
         "@koa/cors": "^3.1.0",
         "@koa/router": "^10.0.0",
         "axios": "^0.21.0",
+        "dotenv": "^8.2.0",
         "joi": "^17.3.0",
         "jsonwebtoken": "^8.5.1",
         "koa": "^2.13.0",
@@ -28,7 +30,8 @@
         "@babel/core": "^7.12.9",
         "@babel/node": "^7.12.6",
         "@babel/preset-env": "^7.12.7",
-        "dotenv": "^8.2.0",
+        "@babel/register": "^7.12.13",
+        "chai": "^4.3.0",
         "eslint": "^7.14.0",
         "eslint-config-prettier": "^6.15.0",
         "eslint-config-standard": "^16.0.2",
@@ -36,6 +39,7 @@
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-prettier": "^3.2.0",
         "eslint-plugin-promise": "^4.2.1",
+        "mocha": "^8.2.1",
         "prettier": "^2.2.1"
     }
 }
