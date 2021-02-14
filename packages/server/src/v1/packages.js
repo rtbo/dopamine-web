@@ -167,22 +167,24 @@ export function setupPackages(router) {
             const { id, version } = ctx.request.params
             const { revision } = ctx.request.query
 
-            const cursor = await ctx.db
-                .collection('recipes')
-                .find({
-                    packageId: ObjectId(id),
-                    version,
-                    revision,
-                })
-                .sort({
-                    created: -1,
-                })
+            const query = {
+                packageId: ObjectId(id),
+                version,
+            }
+            if (revision) {
+                query.revision = revision
+            }
+
+            const cursor = await ctx.db.collection('recipes').find(query).sort({
+                created: -1,
+            })
 
             ctx.assert(await cursor.hasNext(), 404, 'no such recipe')
 
             const recipe = await cursor.next()
 
             ctx.body = {
+                packageId: id,
                 version: recipe.version,
                 revision: recipe.revision,
                 recipe: recipe.recipe,
