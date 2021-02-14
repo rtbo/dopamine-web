@@ -206,12 +206,13 @@ export function setupPackages(router) {
             const { id } = ctx.request.params
             const { latest } = ctx.request.query
 
-            const versions = await ctx.db
+            const distinctVersions = await ctx.db
                 .collection('recipes')
                 .distinct('version', {
                     packageId: ObjectId(id),
                 })
-                .sort(semver.rcompare)
+
+            const versions = distinctVersions.sort(semver.rcompare)
 
             if (latest && versions.length) {
                 ctx.body = [versions[0]]
